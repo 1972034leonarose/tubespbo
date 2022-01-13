@@ -46,7 +46,7 @@ public class TempatVaksinDaoImpl implements DaoService<TempatVaksin> {
 
 
     /**
-     * Fungsi untuk fetch booking sesuai dengan kota domisili user ????
+     * Fungsi untuk fetch tempat sesuai dengan kota domisili user ????
      */
     public List<TempatVaksin> fetchTerdekat(User user)  throws ClassNotFoundException, SQLException {
         List<TempatVaksin> tvs = new ArrayList<>();
@@ -62,7 +62,7 @@ public class TempatVaksinDaoImpl implements DaoService<TempatVaksin> {
 
                         TempatVaksin tv = new TempatVaksin();
                         tv.setId(rs.getInt("id"));
-                        tv.setNama(rs.getString(".nama"));
+                        tv.setNama(rs.getString("nama"));
                         tv.setNoTlpn(rs.getString("noTlpn"));
                         tv.setAlamat(rs.getString("alamat"));
                         tv.setKota(rs.getString("kota"));

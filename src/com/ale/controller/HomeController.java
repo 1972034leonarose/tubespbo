@@ -10,8 +10,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -51,10 +56,10 @@ public class HomeController implements Initializable {
     @FXML
     private Button btnViewJadwal;
     private LoginController loginController;
-
-
     ObservableList<TempatVaksin> tempats;
     TempatVaksinDaoImpl tempatDao;
+    private User curUser;
+    private TempatVaksin selected;
 
     @FXML
     private void helpAction(ActionEvent actionEvent) {
@@ -85,6 +90,19 @@ public class HomeController implements Initializable {
 
     @FXML
     private void viewJadwalActon(ActionEvent actionEvent) {
+//        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/HomeView.fxml"));
+//        fxmlLoader.setResources(rb);
+//        Parent root = fxmlLoader.load();
+//        HomeController controller = fxmlLoader.getController();
+//        controller.setLoginController(this);
+//
+//        Scene scene = new Scene(root);
+//        mainStage = new Stage();
+//        mainStage.setTitle("Home");
+//        mainStage.setScene(scene);
+//        mainStage.show();
+//        Stage loginStage = (Stage) rootAnchor.getScene().getWindow();
+//        loginStage.close();
     }
 
     @Override
@@ -93,26 +111,49 @@ public class HomeController implements Initializable {
         tempatDao = new TempatVaksinDaoImpl();
         tableTempatVaks.setItems(tempats);
 
+        changeLanguage(resourceBundle);
+
         colNamaTempat.setCellValueFactory((d -> new SimpleStringProperty(d.getValue().getNama())));
         colAlamat.setCellValueFactory((d -> new SimpleStringProperty(d.getValue().getAlamat())));
         colNoTelp.setCellValueFactory((d -> new SimpleStringProperty(d.getValue().getNoTlpn())));
         colEmail.setCellValueFactory((d -> new SimpleStringProperty(d.getValue().getEmail())));
         colVaksinTersedia.setCellValueFactory((d -> new SimpleObjectProperty(d.getValue().getVaksin_id())));
+    }
 
-        try {
-//            tempatDao.fetchAll()
-//            tempatDao.fetchTerdekat(loginController.getUser())
-            tempats.addAll(tempatDao.fetchAll());
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
+    private void changeLanguage(ResourceBundle bundle){
+        colNamaTempat.setText(bundle.getString("col.namatempat"));
+        colAlamat.setText(bundle.getString("col.alamat"));
+        colNoTelp.setText(bundle.getString("col.nohp"));
+        colEmail.setText(bundle.getString("col.email"));
+        colVaksinTersedia.setText(bundle.getString("col.vaksintersedia"));
+        txtName.setText(bundle.getString("label.nama"));
+        txtSubheading.setText(bundle.getString("label.subheading"));
+        txtWelcome.setText(bundle.getString("label.welcome"));
+        btnViewJadwal.setText(bundle.getString("button.viewjadwal"));
+
     }
 
     public LoginController getLoginController(){
         return loginController;
     }
 
-    public void setLoginController(LoginController loginController) {
+    public void setLoginController(LoginController loginController) throws SQLException, ClassNotFoundException {
         this.loginController = loginController;
+        curUser = loginController.getUser();
+        txtName.setText(curUser.getNama());
+
+        try {
+            tempats.addAll(tempatDao.fetchTerdekat(loginController.getUser()));
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void selectedTempat(MouseEvent mouseEvent) {
+        selected = tableTempatVaks.getSelectionModel().getSelectedItem();
+        if (selected != null){
+            btnViewJadwal.setDisable(true);
+        }
     }
 }

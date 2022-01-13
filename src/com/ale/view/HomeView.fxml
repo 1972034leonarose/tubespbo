@@ -34,7 +34,7 @@
        </HBox>
       <HBox layoutX="29.0" layoutY="142.0" prefHeight="203.0" prefWidth="635.0">
          <children>
-            <TableView fx:id="tableTempatVaks" editable="true" prefHeight="203.0" prefWidth="673.0">
+            <TableView fx:id="tableTempatVaks" editable="true" onMouseClicked="#selectedTempat" prefHeight="203.0" prefWidth="673.0">
               <columns>
                 <TableColumn fx:id="colNamaTempat" prefWidth="123.0" text="Nama Tempat" />
                 <TableColumn fx:id="colAlamat" prefWidth="123.0" text="Alamat" />
