@@ -44,32 +44,39 @@ public class TempatVaksinDaoImpl implements DaoService<TempatVaksin> {
         return tvs;
     }
 
+
     /**
      * Fungsi untuk fetch booking sesuai dengan kota domisili user ????
      */
-
-    public TempatVaksin fetchTerdekat(User user) throws ClassNotFoundException, SQLException {
-        TempatVaksin result;
+    public List<TempatVaksin> fetchTerdekat(User user)  throws ClassNotFoundException, SQLException {
+        List<TempatVaksin> tvs = new ArrayList<>();
         try (Connection connection = MySQLConnection.createConnection()) {
-            String query = "SELECT * from tempatVaksin where kota = ? ";
+            String query = "SELECT * from tempatVaksin INNER JOIN vaksin ON vaksin.id = tempatVaksin.vaksin_id where kota = ? ";
             try (PreparedStatement ps = connection.prepareStatement(query)) {
                 ps.setString(1, user.getKota());
-
                 try (ResultSet rs = ps.executeQuery()) {
-                    result = new TempatVaksin();
                     while (rs.next()) {
-                        result.setId(rs.getInt("id"));
-                        result.setNama(rs.getString("nama"));
-                        result.setAlamat(rs.getString("alamat"));
-                        result.setKota(rs.getString("kota"));
-                        result.setEmail(rs.getString("email"));
-                        result.setNoTlpn(rs.getString("noTelpn"));
+                        Vaksin v = new Vaksin();
+                        v.setId(rs.getInt("id"));
+                        v.setNama(rs.getString("nama"));
+
+                        TempatVaksin tv = new TempatVaksin();
+                        tv.setId(rs.getInt("id"));
+                        tv.setNama(rs.getString(".nama"));
+                        tv.setNoTlpn(rs.getString("noTlpn"));
+                        tv.setAlamat(rs.getString("alamat"));
+                        tv.setKota(rs.getString("kota"));
+                        tv.setEmail(rs.getString("email"));
+                        tv.setVaksin_id(v);
+
+                        tvs.add(tv);
                     }
-                    return result;
                 }
             }
         }
+        return tvs;
     }
+
 
     @Override
     public int addData(TempatVaksin tempatVaksin) throws ClassNotFoundException, SQLException {

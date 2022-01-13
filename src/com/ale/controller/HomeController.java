@@ -2,6 +2,7 @@ package com.ale.controller;
 
 import com.ale.dao.TempatVaksinDaoImpl;
 import com.ale.entity.TempatVaksin;
+import com.ale.entity.User;
 import com.ale.util.MySQLConnection;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -90,37 +91,28 @@ public class HomeController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tempats = FXCollections.observableArrayList();
         tempatDao = new TempatVaksinDaoImpl();
-
-        tempats = FXCollections.observableArrayList();
-        try {
-            tableTempatVaks.setItems((ObservableList<TempatVaksin>) tempatDao.fetchTerdekat(loginController.getUser()));
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        tableTempatVaks.setItems(tempats);
 
         colNamaTempat.setCellValueFactory((d -> new SimpleStringProperty(d.getValue().getNama())));
         colAlamat.setCellValueFactory((d -> new SimpleStringProperty(d.getValue().getAlamat())));
         colNoTelp.setCellValueFactory((d -> new SimpleStringProperty(d.getValue().getNoTlpn())));
         colEmail.setCellValueFactory((d -> new SimpleStringProperty(d.getValue().getEmail())));
-        colVaksinTersedia.setCellValueFactory((d -> new SimpleObjectProperty<>(d.getValue().getVaksin_id())));
+        colVaksinTersedia.setCellValueFactory((d -> new SimpleObjectProperty(d.getValue().getVaksin_id())));
 
         try {
+//            tempatDao.fetchAll()
+//            tempatDao.fetchTerdekat(loginController.getUser())
             tempats.addAll(tempatDao.fetchAll());
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     public LoginController getLoginController(){
         return loginController;
     }
-    public void setLoginController(LoginController loginController) throws SQLException, ClassNotFoundException {
+
+    public void setLoginController(LoginController loginController) {
         this.loginController = loginController;
     }
-
-
-
 }

@@ -50,11 +50,6 @@ public class LoginController implements Initializable {
         return userDao;
     }
 
-    public ObservableList<TempatVaksin> getTempats() throws SQLException, ClassNotFoundException {
-        tempats = (ObservableList<TempatVaksin>) tempatVaksinDao.fetchTerdekat(getUser());
-        return tempats;
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         userDao = new UserDaoImpl();

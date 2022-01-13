@@ -2,6 +2,7 @@ package com.ale.dao;
 
 import com.ale.entity.Jadwal;
 import com.ale.entity.TempatVaksin;
+import com.ale.entity.User;
 import com.ale.entity.Vaksin;
 import com.ale.util.DaoService;
 import com.ale.util.MySQLConnection;
@@ -42,6 +43,31 @@ public class JadwalDaoImpl implements DaoService<Jadwal> {
         return jadwals;
     }
 
+    public List<Jadwal> fetchJadwal(TempatVaksin tempat) throws SQLException, ClassNotFoundException {
+        List<Jadwal> jadwals = new ArrayList<>();
+        try (Connection connection = MySQLConnection.createConnection()) {
+            String query = "SELECT * FROM jadwal WHERE tempatVaksin_id = ?";
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setInt(1, tempat.getId());
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+//                        TempatVaksin tv = new TempatVaksin();
+//                        tv.setId(rs.getInt("id"));
+//                        tv.setNama(rs.getString("nama"));
+
+                        Jadwal j = new Jadwal();
+                        j.setId(rs.getInt("id"));
+                        j.setJam(rs.getString("jam"));
+                        j.setTanggal(rs.getString("tanggal"));
+//                        j.setTempatVaksin(tv);
+
+                        jadwals.add(j);
+                    }
+                }
+            }
+        }
+        return jadwals;
+    }
 
 
     @Override
