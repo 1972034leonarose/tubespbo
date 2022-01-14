@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class BookDetController implements Initializable {
@@ -55,16 +56,30 @@ public class BookDetController implements Initializable {
 
     @FXML
     private void cancelAction(ActionEvent actionEvent) {
-        // Close
+        // TODO: Close
     }
 
     @FXML
-    private void confirmAction(ActionEvent actionEvent) {
-        String tempat = lblTempatVDet.getText();
-        String tgl = lblTglVDet.getText();
-        String jam = lblJamVDet.getText();
-        String jenis = lblJenisVaks.getText();
-        String nik = lblNikDet.getText();
+    private void confirmAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
+        booking = new Booking();
+        bookU = new User();
+        bookJ = new Jadwal();
+        bookU.setId(bookAController.getJadwalController().getHomeController().getLoginController().getUser().getId());
+        bookJ.setId(bookAController.getJadwalController().getJadwal().getId());
+        booking.setUser_id(bookU);
+        booking.setJadwal_id(bookJ);
+
+        int result = bookingDao.addData(booking);
+        if (result == 1) {
+            Alert about = new Alert(Alert.AlertType.INFORMATION);
+            about.setContentText("Success");
+            about.showAndWait();
+        }else{
+            Alert errorM = new Alert(Alert.AlertType.ERROR);
+            errorM.setContentText("Error Adding Data");
+            errorM.showAndWait();
+        }
+        // TODO: exit return to home
     }
 
     @Override
@@ -75,8 +90,26 @@ public class BookDetController implements Initializable {
     public void setController(BookAController bookAController) {
         this.bookAController = bookAController;
 
-        bookAController.getJadwalController().getJadwal();
+        String jam = bookAController.getJadwalController().getJadwal().getJam();
+        String tempat = bookAController.getJadwalController().getJadwal().getTempatVaksin().getNama();
+        String jenis = bookAController.getJadwalController().getJadwal().getTempatVaksin().getVaksin_id().getNama();
+        String tgl = bookAController.getJadwalController().getJadwal().getTanggal();
 
+        System.out.println(tempat);
+        lblTempatVDet.setText(tempat);
+        lblJamVDet.setText(jam);
+        lblJenisVD.setText(jenis);
+        lblTglVDet.setText(tgl);
 
+        String nik = bookAController.getJadwalController().getHomeController().getLoginController().getUser().getNik();
+        String nama = bookAController.getJadwalController().getHomeController().getLoginController().getUser().getNama();
+        String kota = bookAController.getJadwalController().getHomeController().getLoginController().getUser().getKota();
+        String tglL = bookAController.getJadwalController().getHomeController().getLoginController().getUser().getTanggalLahir();
+        String alamat = bookAController.getJadwalController().getHomeController().getLoginController().getUser().getAlamat();
+
+        lblNikDet.setText(nik);
+        lblNamaDet.setText(nama);
+        lblAlamatDet.setText(alamat);
+        lblTptTglDet.setText(kota + " / " + tglL);
     }
 }

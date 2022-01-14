@@ -130,6 +130,9 @@ public class JadwalController implements Initializable {
         System.out.println(selected);
         System.out.println(homeController.getLoginController().getUser());
 
+//        getJadwal().setTempatVaksin(selected.getTempatVaksin();
+        System.out.println(selected);
+
         if (selected != null){
             btnBook.setDisable(false);
         }else{

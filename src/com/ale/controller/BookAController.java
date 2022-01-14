@@ -57,6 +57,7 @@ public class BookAController implements Initializable {
         bookStage.setTitle("Confirm Booking Details");
         bookStage.setScene(scene);
         bookStage.show();
+        bookStage.alwaysOnTopProperty();
         Stage curStage = (Stage) rootAnchor.getScene().getWindow();
         curStage.close();
 

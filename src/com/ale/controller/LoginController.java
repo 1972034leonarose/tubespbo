@@ -46,10 +46,6 @@ public class LoginController implements Initializable {
     private ObservableList<TempatVaksin> tempats;
 
 
-    public UserDaoImpl getUserDao(){
-        return userDao;
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         userDao = new UserDaoImpl();
@@ -66,7 +62,7 @@ public class LoginController implements Initializable {
 
         try {
             user = userDao.fetchUser(user);
-            if (user != null) {
+            if (user!=null) {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/HomeView.fxml"));
                 fxmlLoader.setResources(rb);
                 Parent root = fxmlLoader.load();
@@ -75,7 +71,7 @@ public class LoginController implements Initializable {
 
                 Scene scene = new Scene(root);
                 mainStage = new Stage();
-                mainStage.setTitle("Home");
+                mainStage.setTitle("Home - View Jadwal");
                 mainStage.setScene(scene);
                 mainStage.show();
                 Stage loginStage = (Stage) rootAnchor.getScene().getWindow();

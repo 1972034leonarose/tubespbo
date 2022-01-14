@@ -63,25 +63,36 @@ public class HomeController implements Initializable {
     TempatVaksinDaoImpl tempatDao;
     private User curUser;
     private TempatVaksin selected;
-
-    private Stage jadwalStage;
     @FXML
     private AnchorPane rootAnchor;
     private ResourceBundle rb;
-    TempatVaksin tempat;
+    private Stage homeStage;
 
+    /* ============================= MENU BAR ==========================================================*/
     @FXML
     private void helpAction(ActionEvent actionEvent) {
+        // TODO: ignore
     }
 
     @FXML
-    private void languageAction(ActionEvent actionEvent) {
+    private void languageAction(ActionEvent actionEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/Language.fxml"), ResourceBundle.getBundle("my_bundle"));
+        Parent root = loader.load();
+        LanguageController controller = loader.getController();
+        controller.setController(this);
+        Stage stage = new Stage();
+        stage.setTitle("Language");
+        stage.setScene(new Scene(root));
+        stage.setResizable(false);
+        stage.initOwner(rootAnchor.getScene().getWindow());
+        stage.show();
     }
 
     @FXML
     private void aboutAction(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText("1972023-Exelonia Maretta-1972032-Andi Gunawan-1972034-Leona Rose");
+        alert.setTitle("Tugas Besar by:");
+        alert.setContentText("1972023-Exelonia Maretta; 1972032-Andi Gunawan; 1972034-Leona Rose");
         alert.showAndWait();
     }
 
@@ -90,12 +101,41 @@ public class HomeController implements Initializable {
     }
 
     @FXML
-    private void historyAction(ActionEvent actionEvent) {
+    private void historyAction(ActionEvent actionEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/History.fxml"));
+        Parent root = loader.load();
+        HistoryController controller = loader.getController();
+        controller.setController(this);
+        homeStage = new Stage();
+        homeStage.setTitle("Booking History");
+        homeStage.setScene(new Scene(root));
+        homeStage.setResizable(false);
+        homeStage.initOwner(rootAnchor.getScene().getWindow());
+        homeStage.show();
     }
 
     @FXML
-    private void logoutAction(ActionEvent actionEvent) {
+    private void logoutAction(ActionEvent actionEvent) throws IOException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Logout");
+        alert.setContentText("Are you sure you want to logout?");
+
+        if (alert.showAndWait().get() == ButtonType.OK){
+            homeStage = (Stage) rootAnchor.getScene().getWindow();
+            homeStage.close();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/LoginView.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Login");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.initOwner(rootAnchor.getScene().getWindow());
+            stage.show();
+        }
     }
+    /* ============================= END MENU BAR ==========================================================*/
+
 
     @FXML
     private void viewJadwalActon(ActionEvent actionEvent) throws IOException {
@@ -138,7 +178,6 @@ public class HomeController implements Initializable {
 //        txtSubheading.setText(bundle.getString("label.subheading"));
 //        txtWelcome.setText(bundle.getString("label.welcome"));
 //        btnViewJadwal.setText(bundle.getString("button.viewjadwal"));
-
     }
 
     public LoginController getLoginController(){
