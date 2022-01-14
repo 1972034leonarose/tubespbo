@@ -47,6 +47,7 @@ public class UserDaoImpl implements DaoService<User> {
                     result = new User();
                     while (rs.next()) {
                         result.setId(rs.getInt("id"));
+                        result.setNik(rs.getString("nik"));
                         result.setNama(rs.getString("nama"));
                         result.setPassword(rs.getString("password"));
                         result.setAlamat(rs.getString("alamat"));
@@ -102,6 +103,26 @@ public class UserDaoImpl implements DaoService<User> {
                 ps.setString(7, user.getKota());
                 ps.setString(8,user.getEmail());
                 ps.setInt(9, user.getId());
+
+                if (ps.executeUpdate() != 0) {
+                    connection.commit();
+                    result = 1;
+                } else {
+                    connection.rollback();
+                }
+            }
+        }
+        return result;
+    }
+
+    public int updateSomeData(User user) throws ClassNotFoundException, SQLException {
+        int result = 0;
+        try (Connection connection = MySQLConnection.createConnection()) {
+            String query = "UPDATE user SET nama=?, email=? WHERE id=?";
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setString(1, user.getNama());
+                ps.setString(2,user.getEmail());
+                ps.setInt(3, user.getId());
 
                 if (ps.executeUpdate() != 0) {
                     connection.commit();

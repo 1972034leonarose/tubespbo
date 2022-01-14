@@ -7,6 +7,11 @@ public class Jadwal {
     private String tanggal;
     private TempatVaksin tempatVaksin;
 
+    @Override
+    public String toString() {
+        return jam+tanggal+tempatVaksin;
+    }
+
     public String getJam() {
         return jam;
     }

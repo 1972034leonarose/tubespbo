@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="429.0" prefWidth="649.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ale.controller.BookAController">
+<AnchorPane fx:id="rootAnchor" prefHeight="429.0" prefWidth="649.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ale.controller.BookAController">
    <children>
       <HBox prefHeight="30.0" prefWidth="649.0">
          <children>
@@ -25,7 +25,7 @@
                   <items>
                         <MenuItem fx:id="menuEditProfile" mnemonicParsing="false" onAction="#editProfileAction" text="Edit Profile" />
                     <MenuItem fx:id="menuHistory" mnemonicParsing="false" onAction="#historyAction" text="Booking History" />
-                        <MenuItem fx:id="menuLogout" mnemonicParsing="false" onAction="#logoutAction" text="Logout" />
+<!--                        <MenuItem fx:id="menuLogout" mnemonicParsing="false" onAction="#logoutAction" text="Logout" />-->
                   </items>
                 </Menu>
               </menus>
@@ -47,8 +47,8 @@
                <children>
                   <Label fx:id="lblNik" text="NIK" />
                   <Label fx:id="lblNama" text="Nama" GridPane.rowIndex="1" />
-                  <Label fx:id="lblTglLahir" text="Tgl Lahir" GridPane.rowIndex="2" />
-                  <TextField fx:id="txtNik" editable="false" GridPane.columnIndex="1" />
+                  <Label fx:id="lblTglLahir" text="Email" GridPane.rowIndex="2" />
+                  <TextField fx:id="txtNik" disable="true" editable="false" GridPane.columnIndex="1" />
                   <TextField fx:id="txtNama" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <TextField fx:id="txtTglLahir" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>

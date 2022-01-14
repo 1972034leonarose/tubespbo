@@ -28,7 +28,7 @@ public class JadwalDaoImpl implements DaoService<Jadwal> {
                         TempatVaksin t = new TempatVaksin();
 
                         t.setId(rs.getInt("tempatVaksin.id"));
-                        t.setNama(rs.getString("tempatVaksin.jam"));
+                        t.setNama(rs.getString("tempatVaksin.nama"));
 
                         j.setId(rs.getInt("jadwal.id"));
                         j.setJam(rs.getString("jadwal.jam"));
@@ -46,20 +46,29 @@ public class JadwalDaoImpl implements DaoService<Jadwal> {
     public List<Jadwal> fetchJadwal(TempatVaksin tempat) throws SQLException, ClassNotFoundException {
         List<Jadwal> jadwals = new ArrayList<>();
         try (Connection connection = MySQLConnection.createConnection()) {
-            String query = "SELECT * FROM jadwal WHERE tempatVaksin_id = ?";
+//            String query = "SELECT tempatVaksin.id, tempatVaksin.nama, jadwal.id, jadwal.jam, jadwal.tanggal, jadwal.tempatVaksin_id, " +
+//                    "tempatVaksin.vaksin_id, vaksin.nama FROM jadwal INNER JOIN tempatVaksin ON tempatVaksin.id = jadwal.tempatVaksin_id " +
+//                    "INNER JOIN vaksin ON vaksin.id = tempatVaksin.vaksin_id WHERE tempatVaksin_id = ?";
+            String query = "SELECT tempatVaksin.id, tempatVaksin.nama, jadwal.id, jadwal.jam, jadwal.tanggal, jadwal.tempatVaksin_id, " +
+                    "tempatVaksin.vaksin_id, vaksin.id, vaksin.nama FROM jadwal INNER JOIN tempatVaksin ON tempatVaksin.id = jadwal.tempatVaksin_id" +
+                    " INNER JOIN vaksin ON vaksin.id = tempatVaksin.vaksin_id WHERE tempatVaksin_id=? ";
             try (PreparedStatement ps = connection.prepareStatement(query)) {
                 ps.setInt(1, tempat.getId());
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
-//                        TempatVaksin tv = new TempatVaksin();
-//                        tv.setId(rs.getInt("id"));
-//                        tv.setNama(rs.getString("nama"));
+                        Vaksin v = new Vaksin();
+                        v.setId(rs.getInt("vaksin.id"));
+                        v.setNama(rs.getString("vaksin.nama"));
+
+                        TempatVaksin tv = new TempatVaksin();
+                        tv.setId(rs.getInt("tempatVaksin.id"));
+                        tv.setVaksin_id(v);
 
                         Jadwal j = new Jadwal();
                         j.setId(rs.getInt("id"));
                         j.setJam(rs.getString("jam"));
                         j.setTanggal(rs.getString("tanggal"));
-//                        j.setTempatVaksin(tv);
+                        j.setTempatVaksin(tv);
 
                         jadwals.add(j);
                     }

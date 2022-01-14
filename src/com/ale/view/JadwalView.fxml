@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="429.0" prefWidth="649.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ale.controller.JadwalController">
+<AnchorPane fx:id="rootAnchor" prefHeight="429.0" prefWidth="649.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ale.controller.JadwalController">
    <children>
       <HBox prefHeight="30.0" prefWidth="649.0">
          <children>
@@ -34,7 +34,7 @@
       </HBox>
       <HBox layoutX="54.0" layoutY="144.0" prefHeight="203.0" prefWidth="542.0">
          <children>
-            <TableView fx:id="tableJadwal" editable="true" prefHeight="203.0" prefWidth="655.0">
+            <TableView fx:id="tableJadwal" editable="true" onMouseClicked="#selectedA" prefHeight="203.0" prefWidth="655.0">
               <columns>
                 <TableColumn fx:id="colTanggal" prefWidth="155.0" text="Tanggal" />
                 <TableColumn fx:id="colJam" prefWidth="162.0" text="Jam" />

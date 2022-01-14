@@ -1,5 +1,6 @@
 package com.ale.controller;
 
+import com.ale.Main;
 import com.ale.dao.TempatVaksinDaoImpl;
 import com.ale.entity.TempatVaksin;
 import com.ale.entity.User;
@@ -16,8 +17,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -61,6 +64,12 @@ public class HomeController implements Initializable {
     private User curUser;
     private TempatVaksin selected;
 
+    private Stage jadwalStage;
+    @FXML
+    private AnchorPane rootAnchor;
+    private ResourceBundle rb;
+    TempatVaksin tempat;
+
     @FXML
     private void helpAction(ActionEvent actionEvent) {
     }
@@ -89,20 +98,19 @@ public class HomeController implements Initializable {
     }
 
     @FXML
-    private void viewJadwalActon(ActionEvent actionEvent) {
-//        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/HomeView.fxml"));
-//        fxmlLoader.setResources(rb);
-//        Parent root = fxmlLoader.load();
-//        HomeController controller = fxmlLoader.getController();
-//        controller.setLoginController(this);
-//
-//        Scene scene = new Scene(root);
-//        mainStage = new Stage();
-//        mainStage.setTitle("Home");
-//        mainStage.setScene(scene);
-//        mainStage.show();
-//        Stage loginStage = (Stage) rootAnchor.getScene().getWindow();
-//        loginStage.close();
+    private void viewJadwalActon(ActionEvent actionEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/JadwalView.fxml"));
+        loader.setResources(rb);
+
+        Parent root = loader.load();
+        JadwalController controller = loader.getController();
+        controller.setController(this);
+        Stage stage = new Stage();
+        stage.setTitle("Jadwal");
+        stage.setScene(new Scene(root));
+        stage.setResizable(false);
+        stage.initOwner(rootAnchor.getScene().getWindow());
+        stage.show();
     }
 
     @Override
@@ -121,15 +129,15 @@ public class HomeController implements Initializable {
     }
 
     private void changeLanguage(ResourceBundle bundle){
-        colNamaTempat.setText(bundle.getString("col.namatempat"));
-        colAlamat.setText(bundle.getString("col.alamat"));
-        colNoTelp.setText(bundle.getString("col.nohp"));
-        colEmail.setText(bundle.getString("col.email"));
-        colVaksinTersedia.setText(bundle.getString("col.vaksintersedia"));
-        txtName.setText(bundle.getString("label.nama"));
-        txtSubheading.setText(bundle.getString("label.subheading"));
-        txtWelcome.setText(bundle.getString("label.welcome"));
-        btnViewJadwal.setText(bundle.getString("button.viewjadwal"));
+//        colNamaTempat.setText(bundle.getString("col.namatempat"));
+//        colAlamat.setText(bundle.getString("col.alamat"));
+//        colNoTelp.setText(bundle.getString("col.nohp"));
+//        colEmail.setText(bundle.getString("col.email"));
+//        colVaksinTersedia.setText(bundle.getString("col.vaksintersedia"));
+//        txtName.setText(bundle.getString("label.nama"));
+//        txtSubheading.setText(bundle.getString("label.subheading"));
+//        txtWelcome.setText(bundle.getString("label.welcome"));
+//        btnViewJadwal.setText(bundle.getString("button.viewjadwal"));
 
     }
 
@@ -152,8 +160,16 @@ public class HomeController implements Initializable {
     @FXML
     private void selectedTempat(MouseEvent mouseEvent) {
         selected = tableTempatVaks.getSelectionModel().getSelectedItem();
+        System.out.println(selected);
         if (selected != null){
+            btnViewJadwal.setDisable(false);
+            System.out.println(getLoginController().getUser());
+        }else{
             btnViewJadwal.setDisable(true);
         }
+    }
+
+    public TempatVaksin getTempat(){
+        return selected;
     }
 }

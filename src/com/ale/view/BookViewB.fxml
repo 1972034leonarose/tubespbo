@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="429.0" prefWidth="649.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ale.tubespbo.view.JadwalView">
+<AnchorPane fx:id="rootAnchor" prefHeight="429.0" prefWidth="649.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ale.controller.BookBController">
    <children>
       <HBox prefHeight="30.0" prefWidth="649.0">
          <children>
@@ -48,9 +48,9 @@
                   <Label fx:id="lblJam" text="Jam" />
                   <Label fx:id="lblTgl" text="Tanggal" GridPane.rowIndex="1" />
                   <Label fx:id="lblJenisVaks" text="Jenis Vaksinasi" GridPane.rowIndex="2" />
-                  <TextField fx:id="txtJam" editable="false" GridPane.columnIndex="1" />
-                  <TextField fx:id="txtTgl" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField fx:id="txtJenisVaksinasi" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <ComboBox fx:id="comboJam" prefWidth="150.0" GridPane.columnIndex="1" />
+                  <ComboBox fx:id="comboTanggal" prefHeight="27.0" prefWidth="161.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <ComboBox fx:id="comboJenis" prefHeight="27.0" prefWidth="188.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
          </children></HBox>
